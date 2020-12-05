@@ -1,0 +1,10 @@
+C:\Users\Алина Козловская\source\repos\тест\тест\bin\Debug\Test.exe.config
+C:\Users\Алина Козловская\source\repos\тест\тест\bin\Debug\Test.exe
+C:\Users\Алина Козловская\source\repos\тест\тест\bin\Debug\Test.pdb
+C:\Users\Алина Козловская\source\repos\тест\тест\obj\Debug\Test.csprojAssemblyReference.cache
+C:\Users\Алина Козловская\source\repos\тест\тест\obj\Debug\Test.Form1.resources
+C:\Users\Алина Козловская\source\repos\тест\тест\obj\Debug\Test.Properties.Resources.resources
+C:\Users\Алина Козловская\source\repos\тест\тест\obj\Debug\Test.csproj.GenerateResource.cache
+C:\Users\Алина Козловская\source\repos\тест\тест\obj\Debug\Test.csproj.CoreCompileInputs.cache
+C:\Users\Алина Козловская\source\repos\тест\тест\obj\Debug\Test.exe
+C:\Users\Алина Козловская\source\repos\тест\тест\obj\Debug\Test.pdb
