@@ -24,11 +24,10 @@ namespace Test
         Bitmap _Bitmap;
         IFigure _figure;
         String Mode;
+        List <Point> pointList;
+        Point[] mouseTracker;
+        int i = 0;
         
-
-
-
-
         public Form1()
         {
             InitializeComponent();
@@ -40,6 +39,8 @@ namespace Test
             graphics = Graphics.FromImage(mainBitmap);
             pictureBox1.Image = mainBitmap;
             pen = new Pen(Color.Black, 5);
+            pointList = new List<Point> ();
+            mouseTracker = new Point[1700];
         }
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
@@ -47,11 +48,13 @@ namespace Test
              _Bitmap = (Bitmap)mainBitmap.Clone ();
             graphics = Graphics.FromImage (_Bitmap);
 
+
             switch (Mode)
             {
                 case "Draw":
                     if (mouseDown == true)
                     {
+                        pointList.Add(e.Location);
                         graphics.DrawLine(pen, startpoint, e.Location);
                         pictureBox1.Image = _Bitmap;
                     }
@@ -63,12 +66,30 @@ namespace Test
                     if ((e.Location.X - secondpoint.X) / (startpoint.X - secondpoint.X) == (e.Location.Y - secondpoint.Y) / (startpoint.Y - secondpoint.Y))
 
                     {
-                        this.UseWaitCursor = true;
+                        if (mouseDown == true)
+                        {
+                            Point delta;
+                            mouseTracker[i] = e.Location;
+                            if (i != 0)
+                            {
+                                delta = new Point(e.X- mouseTracker[i - 1].X, e.Y- mouseTracker[i - 1].Y);
+
+                               
+                                pointList[0] = new Point(pointList[0].X - delta.X, pointList[0].Y - delta.Y );
+                                pointList[1] = new Point(pointList[1].X - delta.X, pointList[1].Y - delta.Y);
+                                
+
+                                graphics.DrawLine(pen, pointList[0], pointList[1]);
+                                pictureBox1.Image = _Bitmap;
+                            }
+                            i++;
+                        }
                     }
                     else
                     {
                         this.UseWaitCursor = false;
                     }
+
                     break;
             }
             GC.Collect();
@@ -83,10 +104,11 @@ namespace Test
             {
                 case "Draw":
                     startpoint = e.Location;
-
+                    pointList.Add(startpoint);
                     break;
 
                 case "Stop":
+
                     break;
             }
         }
@@ -116,6 +138,7 @@ namespace Test
             Mode = "Stop";
         }
         
+
 
 
 
