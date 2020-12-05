@@ -38,6 +38,7 @@ namespace Test
             mainBitmap = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             graphics = Graphics.FromImage(mainBitmap);
             pictureBox1.Image = mainBitmap;
+            graphics.Clear(Color.White); 
             pen = new Pen(Color.Black, 5);
             pointList = new List<Point> ();
         }
@@ -53,7 +54,7 @@ namespace Test
                 case "Draw":
                     if (mouseDown == true)
                     {
-                        graphics.DrawLine(pen, pointList[0], e.Location);
+                        graphics.DrawLine(pen, startpoint, e.Location);
                         pictureBox1.Image = tmpBitmap;
                     }
                     else if (mouseUp == true)
@@ -62,13 +63,16 @@ namespace Test
                     break;
                 case "Stop":
                     {
-                    if ((e.Location.X - secondpoint.X) / (startpoint.X - secondpoint.X) == (e.Location.Y - secondpoint.Y) / (startpoint.Y - secondpoint.Y))
+                    if ((e.Location.X - pointList[1].X) / (pointList[0].X - pointList[1].X) == (e.Location.Y - pointList[1].Y) / (pointList[0].Y - pointList[1].Y))
                         if (mouseDown == true)
                         {
 
                             Point delta;
+                                graphics = Graphics.FromImage(mainBitmap);
+                                graphics.Clear(Color.White);
+                                graphics = Graphics.FromImage(tmpBitmap);
 
-                            if (i != 0)
+                                if (i != 0)
                             {
                                 delta = new Point(e.Location.X - mouseTracker.X, e.Location.Y - mouseTracker.Y);
                                 mouseTracker = e.Location;
