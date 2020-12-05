@@ -21,11 +21,11 @@ namespace Test
         bool mouseUp = false;
         Point startpoint = new Point(1,1);
         Point secondpoint = new Point(7,10);
-        Bitmap _Bitmap;
+        Bitmap tmpBitmap;
         IFigure _figure;
         String Mode;
         List <Point> pointList;
-        Point[] mouseTracker;
+        Point mouseTracker;
         int i = 0;
         
         public Form1()
@@ -40,13 +40,12 @@ namespace Test
             pictureBox1.Image = mainBitmap;
             pen = new Pen(Color.Black, 5);
             pointList = new List<Point> ();
-            mouseTracker = new Point[1700];
         }
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
             mouseMove = true;
-             _Bitmap = (Bitmap)mainBitmap.Clone ();
-            graphics = Graphics.FromImage (_Bitmap);
+            tmpBitmap = (Bitmap)mainBitmap.Clone();
+            graphics = Graphics.FromImage(tmpBitmap);
 
 
             switch (Mode)
@@ -54,46 +53,47 @@ namespace Test
                 case "Draw":
                     if (mouseDown == true)
                     {
-                        pointList.Add(e.Location);
-                        graphics.DrawLine(pen, startpoint, e.Location);
-                        pictureBox1.Image = _Bitmap;
+                        graphics.DrawLine(pen, pointList[0], e.Location);
+                        pictureBox1.Image = tmpBitmap;
                     }
                     else if (mouseUp == true)
                     {
                     }
                     break;
                 case "Stop":
-                    if ((e.Location.X - secondpoint.X) / (startpoint.X - secondpoint.X) == (e.Location.Y - secondpoint.Y) / (startpoint.Y - secondpoint.Y))
-
                     {
+                    if ((e.Location.X - secondpoint.X) / (startpoint.X - secondpoint.X) == (e.Location.Y - secondpoint.Y) / (startpoint.Y - secondpoint.Y))
                         if (mouseDown == true)
                         {
+
                             Point delta;
-                            mouseTracker[i] = e.Location;
+
                             if (i != 0)
                             {
-                                delta = new Point(e.X- mouseTracker[i - 1].X, e.Y- mouseTracker[i - 1].Y);
+                                delta = new Point(e.Location.X - mouseTracker.X, e.Location.Y - mouseTracker.Y);
+                                mouseTracker = e.Location;
 
-                               
-                                pointList[0] = new Point(pointList[0].X - delta.X, pointList[0].Y - delta.Y );
+                                pointList[0] = new Point(pointList[0].X - delta.X, pointList[0].Y - delta.Y);
                                 pointList[1] = new Point(pointList[1].X - delta.X, pointList[1].Y - delta.Y);
-                                
+
 
                                 graphics.DrawLine(pen, pointList[0], pointList[1]);
-                                pictureBox1.Image = _Bitmap;
+
+                                pictureBox1.Image = tmpBitmap;
+
                             }
                             i++;
                         }
-                    }
-                    else
-                    {
-                        this.UseWaitCursor = false;
-                    }
+                        else
+                        {
+                            this.UseWaitCursor = false;
+                        }
 
-                    break;
+                        break;
+                    }
+                    GC.Collect();
+
             }
-            GC.Collect();
-
         }
 
         private void MouseDown(object sender, MouseEventArgs e)
@@ -108,7 +108,7 @@ namespace Test
                     break;
 
                 case "Stop":
-
+                    mouseTracker = e.Location;
                     break;
             }
         }
@@ -120,7 +120,8 @@ namespace Test
             switch (Mode)
             {
                 case "Draw":
-            mainBitmap = _Bitmap;
+                        pointList.Add(e.Location);
+            mainBitmap =  tmpBitmap;
                     break;
                 case "Stop":
                     break;
